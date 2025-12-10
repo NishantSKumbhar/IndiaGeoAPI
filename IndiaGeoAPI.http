@@ -1,0 +1,6 @@
+@IndiaGeoAPI_HostAddress = http://localhost:5032
+
+GET {{IndiaGeoAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
