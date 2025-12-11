@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IndiaGeoAPI.Models.Domain_Model;
+using IndiaGeoAPI.Models.DTO;
+using IndiaGeoAPI.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IndiaGeoAPI.Controllers
 {
@@ -39,23 +42,23 @@ namespace IndiaGeoAPI.Controllers
         };
 
         [HttpGet]
-        public List<string> GetAllStates()
+        public List<StateDomainModel> GetAllStates()
         {
-            return States.Values.ToList();
+            return StateRepository.GetAllStates();
         }
 
         [HttpGet("{id}")]
-        public string GetStateByID([FromRoute] int id)
+        public StateDomainModel GetStateByID([FromRoute] Guid id)
         {
-            return States.FirstOrDefault(x => x.Key == id).Value;
+            return StateRepository.GetStateWithID(id);
         }
 
-        [HttpPost("{NewState}")]
-        public string AddState([FromRoute] string NewState)
+        [HttpPost]
+        public StateDomainModel AddState([FromBody] StateInputDTO NewState)
         {
-            int x = States.Max(x => x.Key);
-            States.Add(x+1, NewState);
-            return $"{States[x+1]} State added with key : {x+1}";
+            
+            var state = StateRepository.CreateState(NewState);
+            return state;
         }
 
         [HttpDelete("{id}")]
